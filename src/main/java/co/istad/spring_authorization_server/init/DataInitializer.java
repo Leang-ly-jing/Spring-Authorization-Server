@@ -37,5 +37,17 @@ public class DataInitializer implements CommandLineRunner {
 
             registeredClientRepository.save(oidcClient);
         }
+        if (registeredClientRepository.findByClientId("order-service") == null) {
+            RegisteredClient orderServiceClient = RegisteredClient.withId(UUID.randomUUID().toString())
+                    .clientId("order-service")
+                    .clientSecret(passwordEncoder.encode("secret"))
+                    .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                    .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+                    .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                    .scope("customer:read")
+                    .scope("customer:write")
+                    .build();
+            registeredClientRepository.save(orderServiceClient);
+        }
     }
 }
